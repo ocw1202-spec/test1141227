@@ -1,5 +1,6 @@
 
 import React from 'react';
+// Corrected import from types.ts
 import { SessionState, TeachingMode, TeachingAction } from '../types';
 
 interface SummaryModalProps {
@@ -25,7 +26,8 @@ const SummaryModal: React.FC<SummaryModalProps> = ({ session, subject, onClose, 
     });
 
     let actionsReport = "\n== [2] 教學行為細節統計 (次數 與 持續時間) ==\n";
-    Object.values(TeachingAction).forEach(action => {
+    // Explicitly cast to TeachingAction array to ensure correct mapping types
+    (Object.values(TeachingAction) as TeachingAction[]).forEach(action => {
       const count = session.actionCounts[action];
       const duration = session.actionDurations[action];
       actionsReport += `${action}: ${count} 次 | 累計時間: ${formatDuration(duration)}\n`;
@@ -79,7 +81,8 @@ const SummaryModal: React.FC<SummaryModalProps> = ({ session, subject, onClose, 
             <section>
               <h3 className="text-amber-500 font-bold mb-4 border-b border-amber-500/20 pb-2">教學模式佔比</h3>
               <div className="space-y-3">
-                {Object.values(TeachingMode).map(mode => (
+                {/* Explicitly cast to avoid 'unknown' type inference in React map */}
+                {(Object.values(TeachingMode) as TeachingMode[]).map((mode) => (
                   <div key={mode} className="flex justify-between items-center bg-slate-900 p-3 rounded-lg">
                     <span className="text-slate-400">{mode}</span>
                     <span className="text-amber-400 font-mono">{formatDuration(session.modeDurations[mode])}</span>
@@ -93,7 +96,8 @@ const SummaryModal: React.FC<SummaryModalProps> = ({ session, subject, onClose, 
             <section>
               <h3 className="text-amber-500 font-bold mb-4 border-b border-amber-500/20 pb-2">行為統計 (量化與時長)</h3>
               <div className="space-y-3">
-                {Object.values(TeachingAction).map(action => (
+                {/* Explicitly cast to avoid 'unknown' type inference in React map */}
+                {(Object.values(TeachingAction) as TeachingAction[]).map((action) => (
                   <div key={action} className="bg-slate-900 p-3 rounded-lg flex justify-between items-center">
                     <div className="flex flex-col">
                       <span className="text-xs text-slate-500">{action}</span>

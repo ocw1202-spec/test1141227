@@ -1,6 +1,7 @@
 
 import React, { useRef } from 'react';
-import { TeachingMode, TeachingAction, SessionState } from '../types';
+// Corrected import path and added LogEntry to handle log stream typing
+import { TeachingMode, TeachingAction, SessionState, LogEntry } from '../types';
 
 interface DashboardProps {
   session: SessionState;
@@ -16,8 +17,9 @@ const formatDuration = (seconds: number) => {
 };
 
 const Dashboard: React.FC<DashboardProps> = ({ session, toggleMode, recordAction, toggleActionTiming }) => {
-  const modes = Object.values(TeachingMode);
-  const actions = Object.values(TeachingAction);
+  // Use type casting to ensure modes and actions are correctly typed as enum arrays, preventing 'unknown' errors
+  const modes = Object.values(TeachingMode) as TeachingMode[];
+  const actions = Object.values(TeachingAction) as TeachingAction[];
   
   // Ref to track long press
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,7 +51,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, toggleMode, recordAction
           教學模式 (States)
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-1 gap-4 flex-1">
-          {modes.map(mode => {
+          {modes.map((mode) => {
             const isActive = session.currentMode === mode;
             return (
               <button
@@ -89,7 +91,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, toggleMode, recordAction
             <span className="text-[10px] text-amber-500/40 italic">長按可切換計時模式</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {actions.map(action => {
+            {actions.map((action) => {
               const isTiming = session.currentAction === action;
               const hasDuration = session.actionDurations[action] > 0;
               
@@ -147,7 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session, toggleMode, recordAction
                 無活動紀錄
               </div>
             ) : (
-              session.logs.map((log) => (
+              session.logs.map((log: LogEntry) => (
                 <div key={log.id} className="flex gap-4 border-b border-white/5 pb-2 last:border-0 hover:bg-white/5 p-1 rounded transition-colors">
                   <span className="text-amber-500/60 shrink-0">
                     [{log.timestamp.toLocaleTimeString('zh-TW', { hour12: false })}]

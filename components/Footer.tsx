@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+// Corrected import path from types.ts
 import { EngagementLevel } from '../types';
 
 interface FooterProps {
